@@ -1,0 +1,19 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "db/query.sql"
+    schema: "db/migrations"
+    gen:
+      go:
+        package: "storage"
+        out: "internal/storage"
+        sql_package: "pgx/v5"
+        overrides:
+          - db_type: "uuid"
+            go_type:
+              import: "github.com/google/uuid"
+              type: "UUID"
+          - column: "transaction.source_id"
+            go_type:
+              import: "github.com/google/uuid"
+              type: "NullUUID"

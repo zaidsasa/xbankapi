@@ -1,0 +1,20 @@
+with-expecter: True
+keeptree: True
+packages:
+  github.com/zaidsasa/xbankapi/internal/storage:
+    config:
+      recursive: True
+      all: True
+      dir: "{{.InterfaceDir}}/mocks"
+      outpkg: "mocks"
+  github.com/jackc/pgx/v5:
+    config:
+      outpkg: "mocks"
+    interfaces:
+      Tx:
+  github.com/zaidsasa/xbankapi/internal/api:
+    config:
+      recursive: True
+      all: True
+      dir: "{{.InterfaceDir}}/mocks"
+      outpkg: "mocks"
