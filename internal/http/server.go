@@ -1,13 +1,18 @@
 package http
 
 import (
+	"context"
 	"fmt"
-	"log/slog"
 	"net/http"
 	"time"
+
+	"github.com/zaidsasa/xbankapi/internal/logger"
 )
 
-const httpServerReadHeaderTimeout = 3 * time.Second
+const (
+	httpServerReadHeaderTimeout = 1 * time.Second
+	timeoutContextDuration      = 1 * time.Second
+)
 
 type (
 	Handler interface {
@@ -15,13 +20,13 @@ type (
 	}
 
 	Server struct {
-		logger   *slog.Logger
+		logger   logger.Logger
 		handlers []Handler
 	}
 )
 
 // NewServer returns a new Server.
-func NewServer(logger *slog.Logger, handlers ...Handler) *Server {
+func NewServer(logger logger.Logger, handlers ...Handler) *Server {
 	return &Server{
 		logger:   logger,
 		handlers: handlers,
@@ -29,7 +34,7 @@ func NewServer(logger *slog.Logger, handlers ...Handler) *Server {
 }
 
 // Start serving with the provided address.
-func (s *Server) Start(addr string) error {
+func (s *Server) Start(ctx context.Context, addr string) error {
 	mux := http.NewServeMux()
 
 	for _, handler := range s.handlers {
@@ -44,10 +49,31 @@ func (s *Server) Start(addr string) error {
 
 	s.logger.Info("server started", "address", addr)
 
-	err := server.ListenAndServe()
-	if err != nil {
-		return fmt.Errorf("failed to serve server :%w", err)
+	errChan := make(chan error, 1)
+
+	go func() {
+		if err := server.ListenAndServe(); err != nil {
+			errChan <- fmt.Errorf("failed to serve server: %w", err)
+		}
+	}()
+
+	select {
+	case err := <-errChan:
+		return err
+	case <-ctx.Done():
+		break
 	}
+
+	s.logger.Info("shutting down server, please wait...")
+
+	ctx, cancelFunc := context.WithTimeout(ctx, timeoutContextDuration)
+	defer cancelFunc()
+
+	if err := server.Shutdown(ctx); err != nil {
+		return fmt.Errorf("failed to shutdown server: %w", err)
+	}
+
+	s.logger.Info("a graceful shutdown")
 
 	return nil
 }

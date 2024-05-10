@@ -6,6 +6,8 @@ import (
 	"log"
 	"log/slog"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/lib/pq"
@@ -36,7 +38,7 @@ func main() {
 
 	validator.ConfigureDefaultValidator()
 
-	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
+	pool, err := pgxpool.New(context.Background(), dbURL)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -54,7 +56,12 @@ func main() {
 		api.NewPropsHandler(pool),
 	)
 
-	if err := srv.Start(addr); err != nil {
+	ctx := context.Background()
+
+	ctx, stop := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	if err := srv.Start(ctx, addr); err != nil {
 		panic(err)
 	}
 }

@@ -24,6 +24,7 @@ var (
 	wantTrnasactionID        = uuid.MustParse("12345678-1234-1234-1234-123456789002")
 	wantReciverAccountID     = uuid.MustParse("12345678-1234-1234-1234-123456789003")
 	wantReciverTransactionID = uuid.MustParse("12345678-1234-1234-1234-123456789004")
+	errAnything              = errors.New("any")
 )
 
 func TestNewAccountService(t *testing.T) {
@@ -56,7 +57,7 @@ func TestAccountService_CreateAccount(t *testing.T) {
 			},
 			mock: func(accountStorageMock *storageMocks.MockAccountStore, a args) {
 				accountStorageMock.EXPECT().CreateAccount(a.ctx, mock.Anything).
-					Return(storage.Account{}, errors.New("error")).Once()
+					Return(storage.Account{}, errAnything).Once()
 			},
 			wantErr: ErrInternal,
 		},
@@ -158,7 +159,7 @@ func TestAccountService_AddMoney(t *testing.T) {
 				accountStorageMock.EXPECT().HasAccount(args.ctx, args.accountID).
 					Return(true, nil).Once()
 				accountStorageMock.EXPECT().AddTransaction(args.ctx, mock.Anything).
-					Return(storage.Transaction{}, errors.New("error")).Once()
+					Return(storage.Transaction{}, errAnything).Once()
 			},
 			wantErr: ErrInternal,
 		},
@@ -239,7 +240,7 @@ func TestAccountService_TransferMoney(t *testing.T) {
 			},
 			mock: func(accountStorageMock *storageMocks.MockAccountStore, _ *storageMocks.MockDBConnection, a args) {
 				accountStorageMock.EXPECT().GetAccount(a.ctx, a.accountID).
-					Return(storage.Account{}, errors.New("error"))
+					Return(storage.Account{}, errAnything)
 			},
 			wantErr: ErrInternal,
 		},
@@ -256,7 +257,7 @@ func TestAccountService_TransferMoney(t *testing.T) {
 				accountStorageMock.EXPECT().GetAccount(a.ctx, a.accountID).
 					Return(storage.Account{}, nil).Once()
 				accountStorageMock.EXPECT().GetAccountTotalAmount(a.ctx, a.accountID).
-					Return(pgtype.Numeric{}, errors.New("error")).Once()
+					Return(pgtype.Numeric{}, errAnything).Once()
 			},
 			wantErr: ErrInternal,
 		},
