@@ -1,7 +1,6 @@
 package api
 
 import (
-	"errors"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -48,7 +47,7 @@ func TestPropsHandler_readiness(t *testing.T) {
 		{
 			name: "failed when database is not available",
 			mock: func(md *storageMocks.MockDBConnection) {
-				md.EXPECT().Ping(mock.Anything).Return(errors.New("error")).Once()
+				md.EXPECT().Ping(mock.Anything).Return(errAnything).Once()
 			},
 			wantStatusCode: http.StatusInternalServerError,
 			want: `not ready

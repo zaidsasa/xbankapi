@@ -2,8 +2,8 @@ TOOLS_DIR:=$(CURDIR)/tools/
 
 PHONY: generate
 generate: install-tool-sqlc install-tool-mockery
-	mockery
 	./tools/sqlc generate
+	mockery
 
 PHONY: lint
 lint:
