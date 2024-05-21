@@ -23,6 +23,7 @@ const defualtServiceAddr = ":3000"
 
 //go:generate go run github.com/sqlc-dev/sqlc/cmd/sqlc generate
 //go:generate go run github.com/vektra/mockery/v2
+//go:generate go run github.com/go-swagger/go-swagger/cmd/swagger generate spec -m -o ./spec/api.json
 func main() {
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {

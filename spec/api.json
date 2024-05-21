@@ -1,0 +1,291 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "Documentation of our xBank API.",
+    "title": "xBankAPI",
+    "version": "1.0.0"
+  },
+  "host": "xbankapi.com",
+  "basePath": "/",
+  "paths": {
+    "/accounts": {
+      "post": {
+        "description": "This endpoint returns a HTTP 200 status code when Account is created.",
+        "tags": [
+          "Account"
+        ],
+        "summary": "Create a new Account",
+        "operationId": "CreateAccountRequest",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "x-go-name": "Body",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateAccountRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/CreateAccountResponse"
+          }
+        }
+      }
+    },
+    "/accounts/{id}/transactions": {
+      "post": {
+        "description": "This endpoint returns a HTTP 200 status code when Money is added to the desired account.\n\nBody:Account",
+        "tags": [
+          "Account"
+        ],
+        "summary": "Add money to an Account",
+        "operationId": "AddMoneyRequest",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "x-go-name": "Body",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddMoneyRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/AddMoneyResponse"
+          }
+        }
+      }
+    },
+    "/accounts/{id}/transactions/transfer": {
+      "post": {
+        "description": "This endpoint returns a HTTP 200 status code when Money is added to the desired account.",
+        "tags": [
+          "Account"
+        ],
+        "summary": "Transfer money from one Account to another.",
+        "operationId": "TransferMoneyRequest",
+        "parameters": [
+          {
+            "type": "string",
+            "x-go-name": "ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "x-go-name": "Body",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TransferMoneyRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/TransferMoneyResponse"
+          }
+        }
+      }
+    },
+    "/healthz": {
+      "get": {
+        "description": "This endpoint returns a HTTP 200 status code when the API server is accepting incoming\nHTTP requests. This status does currently not include checks whether the database connection is working.",
+        "summary": "Check HTTP Server Status",
+        "operationId": "isHealthy",
+        "responses": {
+          "200": {
+            "description": " API server is ready to accept connections and always return \"ok\"."
+          },
+          "500": {
+            "description": " API server is not yet ready to accept connections."
+          }
+        }
+      }
+    },
+    "/readiness": {
+      "get": {
+        "description": "This endpoint returns a HTTP 200 status code when the API server is up running and the environment dependencies\n(e.g. the database) are responsive as well.",
+        "summary": "Check HTTP Server and Database Status",
+        "operationId": "isReady",
+        "responses": {
+          "200": {
+            "description": " API server is ready to accept requests and always return \"ok\"."
+          },
+          "503": {
+            "description": " API server is not yet ready to accept requests."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Account": {
+      "type": "object",
+      "properties": {
+        "currencyCode": {
+          "type": "string",
+          "x-go-name": "CurrencyCode"
+        },
+        "email": {
+          "type": "string",
+          "x-go-name": "Email"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "x-go-name": "ID"
+        },
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        }
+      },
+      "x-go-package": "github.com/zaidsasa/xbankapi/internal/types"
+    },
+    "AddMoneyRequest": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Amount"
+        }
+      },
+      "x-go-package": "github.com/zaidsasa/xbankapi/internal/types"
+    },
+    "AddMoneyResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "x-go-name": "TransactionID"
+        }
+      },
+      "x-go-package": "github.com/zaidsasa/xbankapi/internal/types"
+    },
+    "CreateAccountRequest": {
+      "type": "object",
+      "properties": {
+        "currencyCode": {
+          "type": "string",
+          "x-go-name": "CurrencyCode"
+        },
+        "email": {
+          "type": "string",
+          "x-go-name": "Email"
+        },
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        }
+      },
+      "x-go-package": "github.com/zaidsasa/xbankapi/internal/types"
+    },
+    "CreateAccountResponse": {
+      "type": "object",
+      "properties": {
+        "currencyCode": {
+          "type": "string",
+          "x-go-name": "CurrencyCode"
+        },
+        "email": {
+          "type": "string",
+          "x-go-name": "Email"
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "x-go-name": "ID"
+        },
+        "name": {
+          "type": "string",
+          "x-go-name": "Name"
+        }
+      },
+      "x-go-package": "github.com/zaidsasa/xbankapi/internal/types"
+    },
+    "TransferMoneyRequest": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "Amount"
+        },
+        "reciverAccountId": {
+          "type": "string",
+          "format": "uuid",
+          "x-go-name": "ReciverAccountID"
+        }
+      },
+      "x-go-package": "github.com/zaidsasa/xbankapi/internal/types"
+    },
+    "TransferMoneyResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "x-go-name": "TransactionID"
+        }
+      },
+      "x-go-package": "github.com/zaidsasa/xbankapi/internal/types"
+    }
+  },
+  "responses": {
+    "AddMoneyResponse": {
+      "description": "",
+      "schema": {
+        "$ref": "#/definitions/AddMoneyResponse"
+      }
+    },
+    "CreateAccountResponse": {
+      "description": "",
+      "schema": {
+        "$ref": "#/definitions/CreateAccountResponse"
+      }
+    },
+    "TransferMoneyResponse": {
+      "description": "",
+      "schema": {
+        "$ref": "#/definitions/TransferMoneyResponse"
+      }
+    }
+  },
+  "securityDefinitions": {
+    "basic": {
+      "type": "basic"
+    }
+  }
+}

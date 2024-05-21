@@ -19,6 +19,7 @@ type CreateAccountResponse struct {
 	Account
 }
 
+// swagger:model Account
 type Account struct {
 	_ struct{} `type:"structure"`
 

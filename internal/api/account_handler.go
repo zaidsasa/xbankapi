@@ -37,6 +37,14 @@ func (h *AccountHandler) Register(mux *http.ServeMux) {
 	mux.HandleFunc(transferMoneyRoute, h.transferMoney)
 }
 
+// swagger:route POST /accounts Account CreateAccountRequest
+//
+// # Create a new Account
+//
+// This endpoint returns a HTTP 200 status code when Account is created.
+//
+//	Responses:
+//		200: CreateAccountResponse
 func (h *AccountHandler) createAccount(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	req := &types.CreateAccountRequest{}
@@ -65,6 +73,16 @@ func (h *AccountHandler) createAccount(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// swagger:route POST /accounts/{id}/transactions Account AddMoneyRequest
+//
+// # Add money to an Account
+//
+// This endpoint returns a HTTP 200 status code when Money is added to the desired account.
+//
+//	Body:Account
+//
+//	Responses:
+//		200: AddMoneyResponse
 func (h *AccountHandler) addMoney(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -100,6 +118,14 @@ func (h *AccountHandler) addMoney(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// swagger:route POST /accounts/{id}/transactions/transfer Account TransferMoneyRequest
+//
+// # Transfer money from one Account to another.
+//
+// This endpoint returns a HTTP 200 status code when Money is added to the desired account.
+//
+// Responses:
+// 200: TransferMoneyResponse
 func (h *AccountHandler) transferMoney(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

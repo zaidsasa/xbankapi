@@ -7,6 +7,7 @@
 package main
 
 import (
+	_ "github.com/go-swagger/go-swagger/cmd/swagger"
 	_ "github.com/golang-migrate/migrate/v4/cmd/migrate"
 	_ "github.com/golangci/golangci-lint/cmd/golangci-lint"
 	_ "github.com/sqlc-dev/sqlc/cmd/sqlc"
