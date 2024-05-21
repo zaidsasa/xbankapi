@@ -89,9 +89,67 @@ linters:
     - wrapcheck
     - ireturn
     - gochecknoinits
+
+run:
+  timeout: 5m
+
 issues:
   exclude-rules:
     - path: (.+)_test.go
       linters:
         - goerr113
         - containedctx
+
+linters-settings:
+  gofmt:
+    rewrite-rules:
+      - pattern: "interface{}"
+        replacement: "any"
+
+  govet:
+    enable:
+      - asmdecl
+      - assign
+      - atomic
+      - bools
+      - buildtag
+      - cgocall
+      - copylocks
+      - deepequalerrors
+      - errorsas
+      - framepointer
+      - httpresponse
+      - ifaceassert
+      - loopclosure
+      - lostcancel
+      - nilfunc
+      - nilness
+      - printf
+      - reflectvaluecompare
+      - shift
+      - sigchanyzer
+      - sortslice
+      - stdmethods
+      - stringintconv
+      - structtag
+      - testinggoroutine
+      - tests
+      - unmarshal
+      - unreachable
+      - unsafeptr
+      - unusedresult
+
+  revive:
+    enable-all-rules: false
+    ignore-generated-header: true
+    rules:
+      - name: atomic
+      - name: context-keys-type
+      - name: defer
+      - name: duplicated-imports
+      - name: errorf
+      - name: string-of-int
+      - name: time-equal
+      - name: unconditional-recursion
+      - name: useless-break
+      - name: waitgroup-by-value

@@ -19,10 +19,10 @@ import (
 
 var errMissingEnviromentVariableDatabaseURL = errors.New("missing environment variable DATABASE_URL")
 
-const (
-	defualtServiceAddr = ":3000"
-)
+const defualtServiceAddr = ":3000"
 
+//go:generate go run github.com/sqlc-dev/sqlc/cmd/sqlc generate
+//go:generate go run github.com/vektra/mockery/v2
 func main() {
 	dbURL := os.Getenv("DATABASE_URL")
 	if dbURL == "" {

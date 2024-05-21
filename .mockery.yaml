@@ -1,5 +1,4 @@
 with-expecter: True
-keeptree: True
 packages:
   github.com/zaidsasa/xbankapi/internal/storage:
     config:
