@@ -61,7 +61,6 @@ func (s *Server) Start(ctx context.Context, addr string) error {
 	case err := <-errChan:
 		return err
 	case <-ctx.Done():
-		break
 	}
 
 	s.logger.Info("shutting down server, please wait...")

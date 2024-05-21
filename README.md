@@ -69,6 +69,11 @@ make generate
 
 ## Continuous Integration
 
+### Vet
+```bash
+make vet
+```
+
 ### Lint
 ```bash
 make lint
