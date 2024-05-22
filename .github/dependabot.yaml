@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: daily
+    labels:
+      - go
+      - dependencies
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: "daily"
+    labels:
+      - docker
+      - dependencies

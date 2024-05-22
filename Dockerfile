@@ -15,6 +15,8 @@ RUN make build
 
 FROM alpine:3.19
 
+LABEL org.opencontainers.image.source="https://github.com/zaidsasa/xbankapi"
+
 WORKDIR /app
 
 COPY --from=BUILDER /tools/migrate /app/migrate
