@@ -1,5 +1,7 @@
 FROM golang:alpine3.19 AS BUILDER
 
+LABEL org.opencontainers.image.source="https://github.com/zaidsasa/xbankapi"
+
 WORKDIR /go/src/github.com/zaidsasa/xbankapi
 
 RUN apk add make curl
