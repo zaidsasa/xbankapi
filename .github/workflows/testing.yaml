@@ -1,0 +1,47 @@
+name: Go Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Vet
+        run: make vet
+
+      - name: Lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.59.0
+
+      - name: Validate Generate
+        run: |
+          make generate
+          if git diff --name-only --exit-code; then
+            echo "No changes found in repository after 'go generate'"
+          else
+            echo "Changes found in repository after 'go generate':"
+            git diff --name-only --exit-code
+          fi
+
+      - name: Test
+        run: go test ./... -v -coverprofile="codecov.report" -covermode=atomic
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./codecov.report
+          fail_ci_if_error: true
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
