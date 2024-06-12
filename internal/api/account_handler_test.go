@@ -153,6 +153,8 @@ func TestAccountHandler_createAccount(t *testing.T) {
 }
 
 func TestAccountHandler_addMoney(t *testing.T) {
+	validator.ConfigureDefaultValidator()
+
 	t.Parallel()
 
 	type args struct {
@@ -202,8 +204,6 @@ func TestAccountHandler_addMoney(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
 
-			validator.ConfigureDefaultValidator()
-
 			body, err := json.Marshal(tt.args.body)
 			assert.NoError(t, err)
 
@@ -236,6 +236,8 @@ func TestAccountHandler_addMoney(t *testing.T) {
 }
 
 func TestAccountHandler_transferMoney(t *testing.T) {
+	validator.ConfigureDefaultValidator()
+
 	t.Parallel()
 
 	type args struct {
@@ -285,8 +287,6 @@ func TestAccountHandler_transferMoney(t *testing.T) {
 
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-
-			validator.ConfigureDefaultValidator()
 
 			body, err := json.Marshal(tt.args.body)
 			assert.NoError(t, err)
