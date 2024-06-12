@@ -1,6 +1,4 @@
-FROM golang:alpine3.19 AS BUILDER
-
-LABEL org.opencontainers.image.source="https://github.com/zaidsasa/xbankapi"
+FROM golang:1.22.2-alpine3.19 AS BUILDER
 
 WORKDIR /go/src/github.com/zaidsasa/xbankapi
 
