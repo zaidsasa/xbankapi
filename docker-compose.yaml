@@ -1,7 +1,9 @@
 name: "bank"
 services:
     postgres:
-        image: postgres:15.6-alpine
+        build:
+            context: .github/docker
+            dockerfile: postgres.dockerfile
         restart: always
         environment:
             POSTGRES_USER: admin
