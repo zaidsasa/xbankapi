@@ -12,7 +12,7 @@ require (
 	github.com/lib/pq v1.10.9
 	github.com/sqlc-dev/sqlc v1.26.0
 	github.com/stretchr/testify v1.9.0
-	github.com/vektra/mockery/v2 v2.43.2
+	github.com/vektra/mockery/v2 v2.44.1
 )
 
 require (
