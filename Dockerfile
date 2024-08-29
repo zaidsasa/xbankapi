@@ -1,4 +1,4 @@
-FROM golang:1.22.5-alpine AS BUILDER
+FROM golang:1.23.0-alpine AS BUILDER
 
 WORKDIR /go/src/github.com/zaidsasa/xbankapi
 
