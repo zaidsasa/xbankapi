@@ -1,4 +1,4 @@
-FROM golang:1.23.1-alpine AS BUILDER
+FROM golang:1.23.5-alpine AS BUILDER
 
 WORKDIR /go/src/github.com/zaidsasa/xbankapi
 
@@ -13,7 +13,7 @@ RUN mkdir -p /tools/ && \
 
 RUN make build
 
-FROM alpine:3.20
+FROM alpine:3.21
 
 LABEL org.opencontainers.image.source="https://github.com/zaidsasa/xbankapi"
 
