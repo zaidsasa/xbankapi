@@ -13,7 +13,7 @@ RUN mkdir -p /tools/ && \
 
 RUN make build
 
-FROM alpine:3.21
+FROM alpine:3.22
 
 LABEL org.opencontainers.image.source="https://github.com/zaidsasa/xbankapi"
 
